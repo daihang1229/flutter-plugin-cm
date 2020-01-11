@@ -13,12 +13,13 @@ import io.flutter.plugin.common.PluginRegistry.Registrar
  * des: 穿山甲插件
  */
 class CmPlugin(activity: Activity) : MethodCallHandler {
-    val mActivity = activity
+    private val mActivity = activity
 
     companion object {
+        private lateinit var channel: MethodChannel
         @JvmStatic
         fun registerWith(registrar: Registrar) {
-            val channel = MethodChannel(registrar.messenger(), "im.weshine.plugin/cm")
+            channel = MethodChannel(registrar.messenger(), "im.weshine.plugin/cm")
             channel.setMethodCallHandler(CmPlugin(registrar.activity()))
         }
     }
@@ -92,7 +93,7 @@ class CmPlugin(activity: Activity) : MethodCallHandler {
                         }
 
                         override fun onAdShow() {
-
+                            channel.invokeMethod("adShow","CM_Plugin: Ad Show ")
                         }
 
                         override fun onAdVideoBarClick() {
@@ -100,19 +101,21 @@ class CmPlugin(activity: Activity) : MethodCallHandler {
                         }
 
                         override fun onVideoComplete() {
-
+                            channel.invokeMethod("videoComplete","CM_Plugin: Video Complete ")
                         }
 
                         override fun onAdClose() {
                             result.success("CM_Plugin: Ad close")
+                            channel.invokeMethod("adClose","CM_Plugin: Ad Close ")
                         }
 
                         override fun onVideoError() {
-                            result.success("CM_Plugin: Video error")
+                            channel.invokeMethod("videoError","CM_Plugin: Video Error ")
                         }
 
                     })
                     rewoardAD.showRewardVideoAd(mActivity)
+                    result.success("CM_Plugin: Ad close")
                 } else {
                     result.error("102", "CM_Plugin: Cannot load ad from cm", null)
                 }
