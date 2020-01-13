@@ -89,7 +89,7 @@ class CmPlugin(activity: Activity) : MethodCallHandler {
                         }
 
                         override fun onSkippedVideo() {
-
+                            channel.invokeMethod("adSkip","CM_Plugin: Ad Skip ")
                         }
 
                         override fun onAdShow() {
@@ -105,7 +105,6 @@ class CmPlugin(activity: Activity) : MethodCallHandler {
                         }
 
                         override fun onAdClose() {
-                            result.success("CM_Plugin: Ad close")
                             channel.invokeMethod("adClose","CM_Plugin: Ad Close ")
                         }
 
@@ -115,7 +114,7 @@ class CmPlugin(activity: Activity) : MethodCallHandler {
 
                     })
                     rewoardAD.showRewardVideoAd(mActivity)
-                    result.success("CM_Plugin: Ad close")
+                    result.success("CM_Plugin: Ad request to show")
                 } else {
                     result.error("102", "CM_Plugin: Cannot load ad from cm", null)
                 }

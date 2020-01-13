@@ -20,6 +20,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _initCm();
+
   }
 
   void _onEvent(Object event) {
@@ -46,6 +47,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _state = result;
     });
+
   }
 
   Future<Null> _loadAd() async {
@@ -62,6 +64,35 @@ class _MyAppState extends State<MyApp> {
       _state = result;
     });
   }
+
+  /**
+   * 监听当前ad播放状态
+   */
+  static _adState() {
+    // ignore: missing_return
+    Cm.channel.setMethodCallHandler((handler) {
+      switch (handler.method) {
+        case "adShow":
+          print("adShow");
+          break;
+        case "videoComplete":
+          print("videoComplete");
+          break;
+        case "adClose":
+          print("adClose");
+          break;
+        case "videoError":
+          print("videoError");
+          break;
+        case "adSkip":
+          print("adSkip");
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
