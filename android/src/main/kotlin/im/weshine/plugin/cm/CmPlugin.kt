@@ -15,6 +15,8 @@ import io.flutter.plugin.common.PluginRegistry.Registrar
 class CmPlugin(activity: Activity) : MethodCallHandler {
     private val mActivity = activity
 
+    private var newAd: TTRewardVideoAd? = null
+
     companion object {
         private lateinit var channel: MethodChannel
         @JvmStatic
@@ -37,6 +39,9 @@ class CmPlugin(activity: Activity) : MethodCallHandler {
             "loadad" -> {
                 val adId = call.argument<String>("adId")
                 loadRewardAD(adId!!, result)
+            }
+            "showad" -> {
+                showAd(result)
             }
 
             else -> {
@@ -82,39 +87,9 @@ class CmPlugin(activity: Activity) : MethodCallHandler {
         val native = manager.createAdNative(mActivity)
         native.loadRewardVideoAd(adSlot, object : TTAdNative.RewardVideoAdListener {
             override fun onRewardVideoAdLoad(rewoardAD: TTRewardVideoAd?) {
+                newAd = rewoardAD
                 if (rewoardAD != null) {
-                    rewoardAD.setRewardAdInteractionListener(object : TTRewardVideoAd.RewardAdInteractionListener {
-                        override fun onRewardVerify(p0: Boolean, p1: Int, p2: String?) {
-
-                        }
-
-                        override fun onSkippedVideo() {
-                            channel.invokeMethod("adSkip","CM_Plugin: Ad Skip ")
-                        }
-
-                        override fun onAdShow() {
-                            channel.invokeMethod("adShow","CM_Plugin: Ad Show ")
-                        }
-
-                        override fun onAdVideoBarClick() {
-
-                        }
-
-                        override fun onVideoComplete() {
-                            channel.invokeMethod("videoComplete","CM_Plugin: Video Complete ")
-                        }
-
-                        override fun onAdClose() {
-                            channel.invokeMethod("adClose","CM_Plugin: Ad Close ")
-                        }
-
-                        override fun onVideoError() {
-                            channel.invokeMethod("videoError","CM_Plugin: Video Error ")
-                        }
-
-                    })
-                    rewoardAD.showRewardVideoAd(mActivity)
-                    result.success("CM_Plugin: Ad request to show")
+                    result.success("CM_Plugin:An Ad is ready to show")
                 } else {
                     result.error("102", "CM_Plugin: Cannot load ad from cm", null)
                 }
@@ -130,6 +105,45 @@ class CmPlugin(activity: Activity) : MethodCallHandler {
             }
 
         })
+    }
+
+    private fun showAd(result: Result) {
+        if (newAd != null) {
+            newAd!!.setRewardAdInteractionListener(object : TTRewardVideoAd.RewardAdInteractionListener {
+                override fun onRewardVerify(p0: Boolean, p1: Int, p2: String?) {
+
+                }
+
+                override fun onSkippedVideo() {
+                    channel.invokeMethod("adSkip", "CM_Plugin: Ad Skip ")
+                }
+
+                override fun onAdShow() {
+                    channel.invokeMethod("adShow", "CM_Plugin: Ad Show ")
+                }
+
+                override fun onAdVideoBarClick() {
+
+                }
+
+                override fun onVideoComplete() {
+                    channel.invokeMethod("videoComplete", "CM_Plugin: Video Complete ")
+                }
+
+                override fun onAdClose() {
+                    channel.invokeMethod("adClose", "CM_Plugin: Ad Close ")
+                }
+
+                override fun onVideoError() {
+                    channel.invokeMethod("videoError", "CM_Plugin: Video Error ")
+                }
+
+            })
+            newAd!!.showRewardVideoAd(mActivity)
+            result.success("CM_Plugin:Ad showing")
+        } else {
+            result.error("103", "No ad fill", null)
+        }
     }
 
 }

@@ -20,18 +20,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _initCm();
-
+    _adState();
   }
-
-  void _onEvent(Object event) {
-    print(event);
-  }
-
-  void _onError(Object error) {
-    PlatformException exception = error;
-    exception?.message ?? '';
-  }
-
 
   Future<Null> _initCm() async {
     String result;
@@ -64,6 +54,21 @@ class _MyAppState extends State<MyApp> {
       _state = result;
     });
   }
+
+  Future<Null> _showAd() async {
+    String result;
+    /**
+     * 需要处理这个result
+     */
+    result = await Cm.showAd();
+
+    if (!mounted) return;
+
+    setState(() {
+      _state = result;
+    });
+  }
+
 
   /**
    * 监听当前ad播放状态
