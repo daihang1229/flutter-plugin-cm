@@ -15,8 +15,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  cm: ^0.0.3
-
+  cm: ^0.0.4
 #  cm:
 #    path: ../
 

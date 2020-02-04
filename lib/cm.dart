@@ -53,7 +53,6 @@ class Cm {
   static Future<String> loadFull(Map map) async {
     String loadRes;
     try {
-      print("load full");
       loadRes = await channel.invokeMethod('fullad', map);
     } on Exception {
       print("asada $loadRes");

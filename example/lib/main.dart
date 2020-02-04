@@ -94,12 +94,12 @@ class _MyAppState extends State<MyApp> {
   /**
    * 展示全屏广告
    */
-  Future<Null> _showFUllAd() async {
+  Future<Null> _showFullAd() async {
     String result;
     /**
      * 需要处理这个result
      */
-    result = await Cm.showReward();
+    result = await Cm.showFull();
 
     if (!mounted) return;
 
@@ -149,7 +149,7 @@ class _MyAppState extends State<MyApp> {
               child:Text(
                 'AD State: $_state\n',
               ),
-              onTap: _showFUllAd,
+              onTap: _showFullAd,
             )
           ),
           floatingActionButton: FloatingActionButton(
