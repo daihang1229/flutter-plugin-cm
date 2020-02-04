@@ -3,7 +3,6 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:cm/cm.dart';
 
 void main() => runApp(MyApp());
@@ -40,13 +39,16 @@ class _MyAppState extends State<MyApp> {
 
   }
 
-  Future<Null> _loadAd() async {
+  /**
+   * 加载激励视频
+   */
+  Future<Null> _loadRewardAd() async {
     String result;
     //广告id
     Map map = new HashMap();
     map["adId"] = "901121430";
 
-    result = await Cm.loadAd(map);
+    result = await Cm.loadReward(map);
 
     if (!mounted) return;
 
@@ -55,12 +57,15 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<Null> _showAd() async {
+  /**
+   * 展示激励视频
+   */
+  Future<Null> _showRewardAd() async {
     String result;
     /**
      * 需要处理这个result
      */
-    result = await Cm.showAd();
+    result = await Cm.showReward();
 
     if (!mounted) return;
 
@@ -69,6 +74,39 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  /**
+   * 加载全屏广告
+   */
+  Future<Null> _loadFullAd() async {
+    String result;
+    //广告id
+    Map map = new HashMap();
+    map["adId"] = "901121375";
+    result = await Cm.loadFull(map);
+
+    if (!mounted) return;
+
+    setState(() {
+      _state = result;
+    });
+  }
+
+  /**
+   * 展示全屏广告
+   */
+  Future<Null> _showFUllAd() async {
+    String result;
+    /**
+     * 需要处理这个result
+     */
+    result = await Cm.showReward();
+
+    if (!mounted) return;
+
+    setState(() {
+      _state = result;
+    });
+  }
 
   /**
    * 监听当前ad播放状态
@@ -97,7 +135,7 @@ class _MyAppState extends State<MyApp> {
       }
     });
   }
-
+  bool load = false;
 
   @override
   Widget build(BuildContext context) {
@@ -107,12 +145,15 @@ class _MyAppState extends State<MyApp> {
             title: const Text('Plugin example app'),
           ),
           body: Center(
-            child: Text(
-              'AD State: $_state\n',
-            ),
+            child: GestureDetector(
+              child:Text(
+                'AD State: $_state\n',
+              ),
+              onTap: _showFUllAd,
+            )
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: _loadAd,
+            onPressed: _loadFullAd,
             tooltip: 'Increment',
             child: Icon(Icons.add),
           )),
