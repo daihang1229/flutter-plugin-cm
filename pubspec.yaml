@@ -1,6 +1,6 @@
 name: cm
 description: Cm plugin project.
-version: 0.0.4
+version: 0.0.5
 author: dai<daihang1229@163.com>
 homepage: https://github.com/daihang1229
 publish_to: https://pub.dartlang.org

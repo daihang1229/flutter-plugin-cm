@@ -130,6 +130,7 @@ class _MyAppState extends State<MyApp> {
         case "adSkip":
           print("adSkip");
           break;
+          break;
         default:
           break;
       }
