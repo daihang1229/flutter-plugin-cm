@@ -91,7 +91,7 @@ class CmPlugin(activity: Activity) : MethodCallHandler {
         val adSlot = AdSlot.Builder()
                 .setCodeId(adId)
                 .setSupportDeepLink(true)
-                .setAdCount(2)
+                .setAdCount(1)
                 .setImageAcceptedSize(1080, 1920)
                 .setRewardName("") //奖励的名称
                 .setRewardAmount(0) //奖励的数量
@@ -116,7 +116,7 @@ class CmPlugin(activity: Activity) : MethodCallHandler {
             }
 
             override fun onError(errId: Int, errMsg: String?) {
-                result.success("CM_Plugin: Reward ad failes,ErrId: $errId,ErrMsg: $errMsg")
+                result.success("CM_Plugin: Reward ad failed,ErrId: $errId,ErrMsg: $errMsg")
             }
 
         })
@@ -151,31 +151,11 @@ class CmPlugin(activity: Activity) : MethodCallHandler {
             }
 
             override fun onError(errId: Int, errMsg: String?) {
-                result.success("CM_Plugin: Reward ad failes,ErrId: $errId,ErrMsg: $errMsg")
-
+                result.success("CM_Plugin: full ad failed,ErrId: $errId,ErrMsg: $errMsg")
             }
 
         })
-        native.loadRewardVideoAd(adSlot, object : TTAdNative.RewardVideoAdListener {
-            override fun onRewardVideoAdLoad(rewoardAD: TTRewardVideoAd?) {
-                newAd = rewoardAD
-                if (rewoardAD != null) {
-                    result.success("CM_Plugin:An Ad is ready to show")
-                } else {
-                    result.error("102", "CM_Plugin: Cannot load ad from cm", null)
-                }
 
-            }
-
-            override fun onRewardVideoCached() {
-
-            }
-
-            override fun onError(errId: Int, errMsg: String?) {
-                result.error("$errId", "CM_Plugin: Ad load error -> $errMsg", null)
-            }
-
-        })
     }
 
     /**
@@ -253,7 +233,7 @@ class CmPlugin(activity: Activity) : MethodCallHandler {
 
 
             newFullAd!!.showFullScreenVideoAd(mActivity)
-            result.success("CM_Plugin: Reward ad showing")
+            result.success("CM_Plugin: full ad showing")
         } else {
             result.success("CM_Plugin:No ad fill")
         }
